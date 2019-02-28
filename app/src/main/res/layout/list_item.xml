@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="88dp"
+    android:background="@color/tan_background">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@mipmap/ic_launcher"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+
             android:id="@+id/imageView"
             />
         <LinearLayout
@@ -15,20 +19,25 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
+           android:id="@+id/text_container"
             >
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:text="english"
+                android:text="English"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:id="@+id/englishView"
+                android:textColor="@drawable/color_white"
+                android:textStyle="bold"
+
                 />
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:text="miwok"
                 android:id="@+id/miwokView"
+                android:textColor="@drawable/color_white"
                 />
         </LinearLayout>
 
