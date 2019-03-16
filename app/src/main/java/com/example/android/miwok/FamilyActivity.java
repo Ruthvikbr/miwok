@@ -1,5 +1,6 @@
 package com.example.android.miwok;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,8 +10,28 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import static android.media.AudioManager.AUDIOFOCUS_GAIN;
+import static android.media.AudioManager.AUDIOFOCUS_LOSS;
+import static android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT;
+import static android.media.AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK;
+
 public class FamilyActivity extends AppCompatActivity {
 private MediaPlayer mediaPlayer;
+    private AudioManager audioManager;
+    AudioManager.OnAudioFocusChangeListener afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+        @Override
+        public void onAudioFocusChange(int focusChange) {
+            if(focusChange == AUDIOFOCUS_LOSS_TRANSIENT || focusChange == AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK){
+                mediaPlayer.pause();
+                mediaPlayer.seekTo(0);
+            } else if(focusChange ==AUDIOFOCUS_GAIN){
+                mediaPlayer.start();
+            }
+            else if(focusChange==AUDIOFOCUS_LOSS){
+                releaseMediaPlayer();
+            }
+        }
+    };
     private MediaPlayer.OnCompletionListener mCompletionListener = new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
@@ -47,16 +68,21 @@ private MediaPlayer mediaPlayer;
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                releaseMediaPlayer();
 
                 Word word = words.get(position);
+                releaseMediaPlayer();
+                int result = audioManager.requestAudioFocus(afChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+                if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
 
-                mediaPlayer = MediaPlayer.create(FamilyActivity.this, word.getmAudioResourceId());
 
-                mediaPlayer.start();
+                    mediaPlayer = MediaPlayer.create(FamilyActivity.this, word.getmAudioResourceId());
 
-                mediaPlayer.setOnCompletionListener(mCompletionListener);
+                    mediaPlayer.start();
+
+                    mediaPlayer.setOnCompletionListener(mCompletionListener);
+                }
             }
+
         });
     }
     @Override
