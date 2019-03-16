@@ -59,6 +59,11 @@ private MediaPlayer mediaPlayer;
             }
         });
     }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        releaseMediaPlayer();
+    }
     private void releaseMediaPlayer() {
 
         if (mediaPlayer != null) {
